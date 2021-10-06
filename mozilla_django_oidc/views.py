@@ -157,6 +157,11 @@ class OIDCAuthenticationRequestView(View):
         reverse_url = self.get_settings('OIDC_AUTHENTICATION_CALLBACK_URL',
                                         'oidc_authentication_callback')
 
+        if 'kc_idp_hint' in request.GET:
+            kc_idp_hint =  request.GET['kc_idp_hint']
+        else:
+            kc_idp_hint = ''
+
         params = {
             'response_type': 'code',
             'scope': self.get_settings('OIDC_RP_SCOPES', 'openid email'),
@@ -165,6 +170,7 @@ class OIDCAuthenticationRequestView(View):
                 request,
                 reverse(reverse_url)
             ),
+            'kc_idp_hint': kc_idp_hint,
             'state': state,
         }
 
